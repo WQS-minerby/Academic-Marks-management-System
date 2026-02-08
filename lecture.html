@@ -17,14 +17,6 @@
     </div>
   </div>
   <button class="sheet" onclick="toggleProfile()">My Profile</button>
-  <div id="sheetActions" class="action-panel">
-    <div class="button-row">
-      <button class="sheet" onclick="loadAllMarks()">Load All Marks</button>
-      <button class="sheet" onclick="downloadMarksExcel()">Download Excel</button>
-      <button class="sheet" onclick="downloadTemplateExcel()">Download Template</button>
-      <button class="sheet" onclick="triggerUploadExcel()">Upload Excel</button>
-    </div>
-  </div>
   <div id="profileBody" style="display:none; margin-top:10px;">
     <h3>My Profile</h3>
   <label>Username</label>
@@ -53,6 +45,9 @@
   <label>Score</label>
   <input id="score" type="number" placeholder="0-100">
 
+  <label>Max Score</label>
+  <input id="maxScore" type="number" placeholder="e.g. 50">
+
   <button onclick="uploadMarks()">Upload</button>
 
   <hr>
@@ -63,7 +58,13 @@
   <button class="sheet" onclick="downloadTemplateExcel()">Download Template</button>
   <button class="sheet" onclick="triggerUploadExcel()">Upload Excel</button>
   <input id="marksExcel" type="file" accept=".xlsx" style="display:none" onchange="uploadMarksExcel()">
-  <ul id="marksList"></ul>
+  <div id="marksPanel" class="hidden">
+    <div class="search-row">
+      <input id="marksSearch" placeholder="Search by student username">
+      <button class="sheet" onclick="searchMarksByStudent()">Search</button>
+    </div>
+    <ul id="marksList"></ul>
+  </div>
 
 </div>
 
@@ -71,5 +72,46 @@
 <script>
   loadTeacherProfile();
 </script>
+<footer class="site-footer">
+  <div class="footer-cta">
+    <div class="footer-cta-text">Letâ€™s improve learning together.</div>
+    <div class="footer-cta-form">
+      <input type="email" placeholder="Your email">
+      <button>Submit</button>
+    </div>
+  </div>
+  <div class="footer-body">
+    <div class="footer-brand">
+      <div class="footer-logo">SMARTAPP</div>
+      <div class="footer-desc">Smart learning, marks, and insights in one place.</div>
+      <div class="footer-live">Support: help@smartapp.local</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-title">Academics</div>
+      <div>Courses</div>
+      <div>Assessments</div>
+      <div>Results</div>
+      <div>Reports</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-title">Quick Links</div>
+      <div>Services</div>
+      <div>Events</div>
+      <div>Contact</div>
+      <div>Help Center</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-title">Stay In Touch</div>
+      <div>Facebook</div>
+      <div>Instagram</div>
+      <div>YouTube</div>
+      <div>WhatsApp</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>Copyright Â© 2026 SmartAPP. All rights reserved.</div>
+    <div class="footer-terms">Privacy â€¢ Terms</div>
+  </div>
+</footer>
 </body>
 </html>

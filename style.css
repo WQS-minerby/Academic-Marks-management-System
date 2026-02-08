@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
 * {
   box-sizing: border-box;
   font-family: Arial, sans-serif;
@@ -11,7 +13,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 60px 0 80px 0;
+  padding: 60px 0 0 0;
+  gap: 30px;
 }
 
 .card {
@@ -72,6 +75,14 @@ button.sheet:hover {
   gap: 8px;
 }
 
+.search-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 260px) auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
 .action-panel {
   margin-top: 10px;
   padding: 10px;
@@ -102,7 +113,7 @@ button.sheet:hover {
 }
 
 .hidden {
-  display: flex;
+  display: none;
 }
 
 .marks-panel h3 {
@@ -114,15 +125,31 @@ button.sheet:hover {
 
 
 .profile-panel {
-  position: fixed;
-  top: 12px;
-  right: 12px;
+  position: static;
   width: 300px;
   background: #f4f6fb;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 16px 32px rgba(0,0,0,0.18);
   z-index: 10;
+}
+
+.lecture-page .profile-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  border-radius: 30px;
+}
+
+.lecture-page {
+  align-items: stretch;
+}
+
+.admin-page .profile-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  border-radius: 30px;
 }
 
 .profile-panel h3 {
@@ -225,17 +252,68 @@ button.logout.corner {
 }
 
 .site-footer {
-  position: fixed;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
-  width: min(980px, 94vw);
+  position: static;
+  width: 100%;
+  align-self: stretch;
+  margin-top: auto;
   background: #2f243a;
   color: #e8e2f2;
-  border-radius: 18px;
+  border-radius: 0;
   box-shadow: 0 18px 40px rgba(0,0,0,0.25);
   overflow: hidden;
   z-index: 20;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.lecture-page .card {
+  width: 100%;
+  max-width: 720px;
+  margin-bottom: 30px;
+}
+
+.admin-page {
+  align-items: stretch;
+}
+
+.admin-page .card {
+  width: 100%;
+  max-width: 720px;
+  margin-bottom: 30px;
+}
+.lecture-page .card button,
+.lecture-page .card .sheet,
+.admin-page .card button,
+.admin-page .card .sheet {
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 10px 20px rgba(24, 88, 180, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  width: auto;
+  padding: 12px 18px;
+}
+
+.lecture-page .card button:hover,
+.lecture-page .card .sheet:hover,
+.admin-page .card button:hover,
+.admin-page .card .sheet:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(24, 88, 180, 0.22);
+}
+
+.lecture-page .card .sheet,
+.admin-page .card .sheet {
+  background: #1f8f7a;
+}
+
+.lecture-page .card .sheet:hover,
+.admin-page .card .sheet:hover {
+  background: #197b69;
+}
+
+.login-page .card {
+  margin-bottom: 30px;
 }
 
 .footer-cta {
@@ -243,7 +321,7 @@ button.logout.corner {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 22px 28px;
+  padding: 16px 22px;
   background: #3a2c4a;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
@@ -286,8 +364,8 @@ button.logout.corner {
 .footer-body {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1fr 1fr;
-  gap: 20px;
-  padding: 26px 28px;
+  gap: 16px;
+  padding: 18px 22px;
 }
 
 .footer-brand {
@@ -328,7 +406,7 @@ button.logout.corner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 28px 20px 28px;
+  padding: 12px 22px 14px 22px;
   font-size: 11px;
   color: rgba(232,226,242,0.65);
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -389,4 +467,269 @@ ul li {
   padding: 10px;
   border-radius: 6px;
   font-size: 14px;
+}
+
+.landing-page {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(96, 165, 250, 0.25), transparent 55%),
+    radial-gradient(circle at 90% 20%, rgba(16, 185, 129, 0.2), transparent 55%),
+    linear-gradient(135deg, #0f172a, #111827 60%, #0b1020);
+  color: #e5e7eb;
+  padding: 36px 5vw 80px 5vw;
+  gap: 40px;
+}
+
+.landing-header {
+  width: min(1200px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #22c55e, #60a5fa);
+  color: #0f172a;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.landing-nav a {
+  color: #cbd5f5;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.landing-nav a:hover {
+  background: rgba(148, 163, 184, 0.2);
+  color: #fff;
+}
+
+.hero {
+  width: min(1200px, 100%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(32px, 4vw, 46px);
+  margin: 12px 0 12px 0;
+  color: #f8fafc;
+}
+
+.hero-kicker {
+  text-transform: uppercase;
+  letter-spacing: 2.2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #93c5fd;
+}
+
+.hero-text p {
+  margin: 0;
+  color: #cbd5f5;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.hero-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-actions .cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 14px 26px rgba(34, 197, 94, 0.25);
+}
+
+.hero-actions .ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #e2e8f0;
+  text-decoration: none;
+}
+
+.hero-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 18px;
+  padding: 22px;
+  display: grid;
+  gap: 16px;
+  box-shadow: 0 20px 40px rgba(2, 6, 23, 0.35);
+}
+
+.stat {
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.7);
+}
+
+.stat-title {
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.stat-value {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 30px;
+  margin: 8px 0 2px 0;
+}
+
+.stat-note {
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.7);
+}
+
+.ticker {
+  width: min(1200px, 100%);
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.ticker-track {
+  display: flex;
+  gap: 40px;
+  white-space: nowrap;
+  animation: ticker-move 12s linear infinite;
+  font-weight: 600;
+  color: #c7d2fe;
+}
+
+.ticker-track span {
+  padding-left: 24px;
+}
+
+@keyframes ticker-move {
+  0% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(40%);
+  }
+}
+
+.quick-links {
+  width: min(1200px, 100%);
+  margin-top: 8px;
+}
+
+.quick-links h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.link-grid a {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #e2e8f0;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, border 0.2s ease;
+}
+
+.link-grid a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+.typing {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid rgba(248, 250, 252, 0.8);
+  animation: typing 3s steps(22, end) infinite, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: rgba(248, 250, 252, 0.8);
+  }
+}
+
+@media (max-width: 720px) {
+  .landing-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
