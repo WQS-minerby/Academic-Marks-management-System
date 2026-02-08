@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartApp Sign Up</title>
+  <!-- Connect CSS here -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+  <h2>Create Account</h2>
+
+  <label>Username</label>
+  <input id="username" placeholder="Enter username">
+
+  <label>Role</label>
+  <select id="role">
+    <option value="student">Student</option>
+    <option value="teacher">Teacher</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <div id="teacherFields" style="display:none;">
+    <label>Module Title/Subject</label>
+    <input id="moduleTitle" placeholder="e.g. Mathematics">
+
+    <label>Module Code</label>
+    <input id="moduleCode" placeholder="e.g. MTH101">
+  </div>
+
+  <label>Password</label>
+  <input id="password" type="password" placeholder="Enter password">
+
+  <label>Confirm Password</label>
+  <input id="confirm" type="password" placeholder="Confirm password">
+
+  <button onclick="signup()">Sign Up</button>
+
+  <div class="link">
+    Already have an account? <a href="login.html">Login</a>
+  </div>
+</div>
+
+<!-- Link JavaScript -->
+<script src="main.js"></script>
+<script>
+  const roleEl = document.getElementById("role");
+  const teacherFields = document.getElementById("teacherFields");
+  function toggleTeacherFields() {
+    teacherFields.style.display = roleEl.value === "teacher" ? "block" : "none";
+  }
+  roleEl.addEventListener("change", toggleTeacherFields);
+  toggleTeacherFields();
+</script>
+<footer class="site-footer">
+  <div class="footer-cta">
+    <div class="footer-cta-text">Let’s improve learning together.</div>
+    <div class="footer-cta-form">
+      <input type="email" placeholder="Your email">
+      <button>Submit</button>
+    </div>
+  </div>
+  <div class="footer-body">
+    <div class="footer-brand">
+      <div class="footer-logo">SMARTAPP</div>
+      <div class="footer-desc">Smart learning, marks, and insights in one place.</div>
+      <div class="footer-live">Support: help@smartapp.local</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-title">Academics</div>
+      <div>Courses</div>
+      <div>Assessments</div>
+      <div>Results</div>
+      <div>Reports</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-title">Quick Links</div>
+      <div>Services</div>
+      <div>Events</div>
+      <div>Contact</div>
+      <div>Help Center</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-title">Stay In Touch</div>
+      <div>Facebook</div>
+      <div>Instagram</div>
+      <div>YouTube</div>
+      <div>WhatsApp</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>Copyright © 2026 SmartAPP. All rights reserved.</div>
+    <div class="footer-terms">Privacy • Terms</div>
+  </div>
+</footer>
+</body>
+</html>

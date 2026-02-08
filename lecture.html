@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Marks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="lecture-page" data-allow-delete="true">
+
+<div class="dashboard-row">
+<div class="profile-panel">
+  <div class="profile">
+    <img id="teacherAvatar" class="avatar" alt="Profile picture">
+    <div>
+      <button class="sheet" onclick="document.getElementById('teacherAvatarInput').click()">Change Picture</button>
+      <input id="teacherAvatarInput" type="file" accept="image/*" style="display:none" onchange="updateTeacherAvatar()">
+    </div>
+  </div>
+  <button class="sheet" onclick="toggleProfile()">My Profile</button>
+  <div id="sheetActions" class="action-panel">
+    <div class="button-row">
+      <button class="sheet" onclick="loadAllMarks()">Load All Marks</button>
+      <button class="sheet" onclick="downloadMarksExcel()">Download Excel</button>
+      <button class="sheet" onclick="downloadTemplateExcel()">Download Template</button>
+      <button class="sheet" onclick="triggerUploadExcel()">Upload Excel</button>
+    </div>
+  </div>
+  <div id="profileBody" style="display:none; margin-top:10px;">
+    <h3>My Profile</h3>
+  <label>Username</label>
+  <input id="teacherUsername" disabled>
+
+  <label>Module Title/Subject</label>
+  <input id="teacherModuleTitle" placeholder="e.g. Mathematics">
+
+  <label>Module Code</label>
+  <input id="teacherModuleCode" placeholder="e.g. MTH101">
+
+    <button class="sheet" onclick="saveTeacherProfile()">Save Profile</button>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Upload Marks</h2>
+
+  <label>Student Username</label>
+  <input id="student" placeholder="Enter username">
+
+  <label>Course</label>
+  <input id="course" placeholder="Enter course">
+
+  <label>Score</label>
+  <input id="score" type="number" placeholder="0-100">
+
+  <button onclick="uploadMarks()">Upload</button>
+
+  <hr>
+
+  <h3>Edit Marks</h3>
+  <button class="sheet" onclick="loadAllMarks()">Load All Marks</button>
+  <button class="sheet" onclick="downloadMarksExcel()">Download Excel</button>
+  <button class="sheet" onclick="downloadTemplateExcel()">Download Template</button>
+  <button class="sheet" onclick="triggerUploadExcel()">Upload Excel</button>
+  <input id="marksExcel" type="file" accept=".xlsx" style="display:none" onchange="uploadMarksExcel()">
+  <ul id="marksList"></ul>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+  loadTeacherProfile();
+</script>
+</body>
+</html>

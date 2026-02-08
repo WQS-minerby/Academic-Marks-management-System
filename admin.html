@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Marks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-allow-delete="true" class="admin-page">
+
+<div class="dashboard-row">
+<div class="marks-layout">
+<div class="card admin-form">
+  <h2>Upload Marks</h2>
+
+  <label>Student Username</label>
+  <input id="student" placeholder="Enter username">
+
+  <label>Course</label>
+  <input id="course" placeholder="Enter course">
+
+  <label>Score</label>
+  <input id="score" type="number" placeholder="0-100">
+
+  <label>Max Score</label>
+  <input id="maxScore" type="number" placeholder="e.g. 50">
+
+  <button onclick="uploadMarks()">Upload</button>
+
+  <hr>
+
+  <h3>&nbsp;</h3>
+  <input id="marksExcel" type="file" accept=".xlsx" style="display:none" onchange="uploadMarksExcel()">
+</div>
+http://localhost:3000/
+<script src="main.js"></script>
+</body>
+</html>
