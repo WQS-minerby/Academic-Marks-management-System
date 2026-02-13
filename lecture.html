@@ -2,116 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Upload Marks</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="lecture-page" data-allow-delete="true">
+<body class="lecture-page">
+  <a class="page-brand" href="start.html" aria-label="SmartAPP Home">
+    <span class="brand-mark">S</span>
+    <span class="brand-name">SmartAPP</span>
+  </a>
+  <a class="home-btn with-profile" href="start.html">Back to Home</a>
 
-<div class="dashboard-row">
-<div class="profile-panel">
-  <div class="profile">
-    <img id="teacherAvatar" class="avatar" alt="Profile picture">
-    <div>
-      <button class="sheet" onclick="document.getElementById('teacherAvatarInput').click()">Change Picture</button>
-      <input id="teacherAvatarInput" type="file" accept="image/*" style="display:none" onchange="updateTeacherAvatar()">
+  <div class="dashboard-row">
+    <div class="card">
+      <h2>Upload Marks</h2>
+
+      <label>Student Registration Number</label>
+      <input id="student" placeholder="Enter registration number">
+
+      <label>Course</label>
+      <input id="course" placeholder="Enter course">
+
+      <label>Score</label>
+      <input id="score" type="number" placeholder="0-100">
+
+      <label>Max Score</label>
+      <input id="maxScore" type="number" placeholder="e.g. 50">
+
+      <button onclick="uploadMarks()">Upload</button>
+
+      <hr>
+
+      <h3>Edit Marks</h3>
+      <div class="button-row">
+        <button class="sheet" onclick="loadAllMarks()">Load All Marks</button>
+        <button class="sheet" onclick="downloadMarksExcel()">Download Excel</button>
+        <button class="sheet" onclick="downloadTemplateExcel()">Download Template</button>
+        <button class="sheet" onclick="triggerUploadExcel()">Upload Excel</button>
+      </div>
+      <input id="marksExcel" type="file" accept=".xlsx" style="display:none" onchange="uploadMarksExcel()">
+
+      <div id="marksPanel" class="hidden">
+        <div class="search-row">
+          <input id="marksSearch" placeholder="Search by student username">
+          <button class="sheet" onclick="searchMarksByStudent()">Search</button>
+        </div>
+        <ul id="marksList"></ul>
+      </div>
+    </div>
+
+    <div class="profile-panel">
+      <div class="profile">
+        <img id="teacherAvatar" class="avatar" alt="Profile picture">
+        <div>
+          <button class="sheet" onclick="document.getElementById('teacherAvatarInput').click()">Change Picture</button>
+          <input id="teacherAvatarInput" type="file" accept="image/*" style="display:none" onchange="updateTeacherAvatar()">
+        </div>
+      </div>
+      <button class="sheet" onclick="toggleProfile()">My Profile</button>
+      <div id="profileBody" style="display:none; margin-top:10px;">
+        <h3>My Profile</h3>
+        <label>Username</label>
+        <input id="teacherUsername" disabled>
+
+        <label>Module Title/Subject</label>
+        <input id="teacherModuleTitle" placeholder="e.g. Mathematics">
+
+        <label>Module Code</label>
+        <input id="teacherModuleCode" placeholder="e.g. MTH101">
+
+        <button class="sheet" onclick="saveTeacherProfile()">Save Profile</button>
+        <button class="logout" onclick="logout()">Logout</button>
+      </div>
     </div>
   </div>
-  <button class="sheet" onclick="toggleProfile()">My Profile</button>
-  <div id="profileBody" style="display:none; margin-top:10px;">
-    <h3>My Profile</h3>
-  <label>Username</label>
-  <input id="teacherUsername" disabled>
 
-  <label>Module Title/Subject</label>
-  <input id="teacherModuleTitle" placeholder="e.g. Mathematics">
+  <script src="main.js"></script>
+  <script>
+    loadTeacherProfile();
+  </script>
 
-  <label>Module Code</label>
-  <input id="teacherModuleCode" placeholder="e.g. MTH101">
-
-    <button class="sheet" onclick="saveTeacherProfile()">Save Profile</button>
-    <button class="logout" onclick="logout()">Logout</button>
-  </div>
-</div>
-
-<div class="card">
-  <h2>Upload Marks</h2>
-
-  <label>Student Username</label>
-  <input id="student" placeholder="Enter username">
-
-  <label>Course</label>
-  <input id="course" placeholder="Enter course">
-
-  <label>Score</label>
-  <input id="score" type="number" placeholder="0-100">
-
-  <label>Max Score</label>
-  <input id="maxScore" type="number" placeholder="e.g. 50">
-
-  <button onclick="uploadMarks()">Upload</button>
-
-  <hr>
-
-  <h3>Edit Marks</h3>
-  <button class="sheet" onclick="loadAllMarks()">Load All Marks</button>
-  <button class="sheet" onclick="downloadMarksExcel()">Download Excel</button>
-  <button class="sheet" onclick="downloadTemplateExcel()">Download Template</button>
-  <button class="sheet" onclick="triggerUploadExcel()">Upload Excel</button>
-  <input id="marksExcel" type="file" accept=".xlsx" style="display:none" onchange="uploadMarksExcel()">
-  <div id="marksPanel" class="hidden">
-    <div class="search-row">
-      <input id="marksSearch" placeholder="Search by student username">
-      <button class="sheet" onclick="searchMarksByStudent()">Search</button>
+  <footer class="site-footer">
+    <div class="footer-cta">
+      <div class="footer-cta-text">Let's improve learning together.</div>
+      <div class="footer-cta-form">
+        <input type="email" placeholder="Your email">
+        <button>Submit</button>
+      </div>
     </div>
-    <ul id="marksList"></ul>
-  </div>
-
-</div>
-
-<script src="main.js"></script>
-<script>
-  loadTeacherProfile();
-</script>
-<footer class="site-footer">
-  <div class="footer-cta">
-    <div class="footer-cta-text">Letâ€™s improve learning together.</div>
-    <div class="footer-cta-form">
-      <input type="email" placeholder="Your email">
-      <button>Submit</button>
+    <div class="footer-body">
+      <div class="footer-brand">
+        <div class="footer-logo">SmartAPP</div>
+        <div class="footer-desc">Smart learning, marks, and insights in one place.</div>
+        <div class="footer-live">Support: help@smartapp.com</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Academics</div>
+        <div>Courses</div>
+        <div>Assessments</div>
+        <div>Results</div>
+        <div>Reports</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Quick Links</div>
+        <div>Services</div>
+        <div>Events</div>
+        <div>Contact</div>
+        <div>Help Center</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Stay In Touch</div>
+        <a class="social-item" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook logo"><span>Facebook</span></a>
+        <a class="social-item" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram logo"><span>Instagram</span></a>
+        <a class="social-item" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/youtube/ffffff" alt="YouTube logo"><span>YouTube</span></a>
+        <a class="social-item" href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="WhatsApp logo"><span>WhatsApp</span></a>
+      </div>
     </div>
-  </div>
-  <div class="footer-body">
-    <div class="footer-brand">
-      <div class="footer-logo">SMARTAPP</div>
-      <div class="footer-desc">Smart learning, marks, and insights in one place.</div>
-      <div class="footer-live">Support: help@smartapp.local</div>
+    <div class="footer-bottom">
+      <div>Copyright &copy; 2026 SmartAPP. All rights reserved.</div>
+      <div class="footer-terms">Privacy.Terms</div>
     </div>
-    <div class="footer-col">
-      <div class="footer-title">Academics</div>
-      <div>Courses</div>
-      <div>Assessments</div>
-      <div>Results</div>
-      <div>Reports</div>
-    </div>
-    <div class="footer-col">
-      <div class="footer-title">Quick Links</div>
-      <div>Services</div>
-      <div>Events</div>
-      <div>Contact</div>
-      <div>Help Center</div>
-    </div>
-    <div class="footer-col">
-      <div class="footer-title">Stay In Touch</div>
-      <div>Facebook</div>
-      <div>Instagram</div>
-      <div>YouTube</div>
-      <div>WhatsApp</div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div>Copyright Â© 2026 SmartAPP. All rights reserved.</div>
-    <div class="footer-terms">Privacy â€¢ Terms</div>
-  </div>
-</footer>
+  </footer>
 </body>
 </html>

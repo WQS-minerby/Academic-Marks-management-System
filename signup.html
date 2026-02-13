@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartApp Sign Up</title>
   <!-- Connect CSS here -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+
+<a class="page-brand" href="start.html" aria-label="SmartAPP Home">
+  <span class="brand-mark">S</span>
+  <span class="brand-name">SmartAPP</span>
+</a>
+<a class="home-btn" href="start.html">Back to Home</a>
 
 <div class="card">
   <h2>Create Account</h2>
 
   <label>Username</label>
-  <input id="username" placeholder="Enter username">
+  <input id="username" placeholder="Enter username" autocomplete="username" required>
+
+  <label>Registration Number</label>
+  <input id="regNumber" placeholder="Enter registration number" autocomplete="off" required>
+
+  <label>Phone Number</label>
+  <input id="phone" placeholder="e.g. +2507XXXXXXXX" autocomplete="tel" required>
 
   <label>Role</label>
   <select id="role">
@@ -30,10 +42,11 @@
   </div>
 
   <label>Password</label>
-  <input id="password" type="password" placeholder="Enter password">
+  <input id="password" type="password" placeholder="At least 8 chars, A-z, 0-9" autocomplete="new-password" minlength="8" required>
+  <small>Password must include uppercase, lowercase, and a number.</small>
 
   <label>Confirm Password</label>
-  <input id="confirm" type="password" placeholder="Confirm password">
+  <input id="confirm" type="password" placeholder="Confirm password" autocomplete="new-password" minlength="8" required>
 
   <button onclick="signup()">Sign Up</button>
 
@@ -83,10 +96,10 @@
     </div>
     <div class="footer-col">
       <div class="footer-title">Stay In Touch</div>
-      <div>Facebook</div>
-      <div>Instagram</div>
-      <div>YouTube</div>
-      <div>WhatsApp</div>
+      <a class="social-item" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook logo"><span>Facebook</span></a>
+      <a class="social-item" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram logo"><span>Instagram</span></a>
+      <a class="social-item" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/youtube/ffffff" alt="YouTube logo"><span>YouTube</span></a>
+      <a class="social-item" href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer"><img class="social-logo" src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="WhatsApp logo"><span>WhatsApp</span></a>
     </div>
   </div>
   <div class="footer-bottom">
