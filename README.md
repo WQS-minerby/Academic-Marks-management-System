@@ -1,0 +1,2 @@
+The Academic Management System is a digital solution designed to support educational institutions in organizing and managing academic operations effectively. It brings together essential academic information, including student records, teacher profiles, courses, grades, and attendance, into one centralized platform.
+<img width="180" height="179" alt="image" src="https://github.com/user-attachments/assets/f3ae39a9-c965-4987-9c61-c803f868b59d" />
