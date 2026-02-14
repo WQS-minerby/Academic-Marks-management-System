@@ -1,6 +1,9 @@
 ﻿const express = require("express");
 const cors = require("cors");
 const XLSX = require("xlsx");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config({ override: true });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,10 +16,121 @@ app.use(express.raw({
   limit: "10mb"
 }));
 
+const DB_FILE = path.join(__dirname, "database.json");
+const NETLIFY_DATABASE_URL = process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL || "";
+const ONLINE_STATE_ID = "main";
+const HAS_REAL_NEON_URL = NETLIFY_DATABASE_URL
+  && !NETLIFY_DATABASE_URL.includes("<")
+  && (NETLIFY_DATABASE_URL.startsWith("postgres://") || NETLIFY_DATABASE_URL.startsWith("postgresql://"));
+
 const users = new Map();
 const marks = [];
 const passwordResetOtps = new Map();
 let nextMarkId = 1;
+let sql = null;
+
+function applyState(data) {
+  users.clear();
+  marks.length = 0;
+
+  const userList = Array.isArray(data.users) ? data.users : [];
+  const markList = Array.isArray(data.marks) ? data.marks : [];
+  userList.forEach(u => users.set(u.username, u));
+  markList.forEach(m => marks.push(m));
+  nextMarkId = Number.isFinite(data.nextMarkId) && data.nextMarkId > 0
+    ? data.nextMarkId
+    : (marks.reduce((max, m) => Math.max(max, Number(m.id) || 0), 0) + 1);
+}
+
+function getCurrentState() {
+  return {
+    users: Array.from(users.values()),
+    marks,
+    nextMarkId
+  };
+}
+
+async function loadDatabase() {
+  if (HAS_REAL_NEON_URL) {
+    try {
+      const { neon } = await import("@netlify/neon");
+      sql = neon();
+      await sql`
+        CREATE TABLE IF NOT EXISTS app_state (
+          id TEXT PRIMARY KEY,
+          state JSONB NOT NULL,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+      `;
+      const rows = await sql`
+        SELECT state
+        FROM app_state
+        WHERE id = ${ONLINE_STATE_ID}
+        LIMIT 1
+      `;
+
+      if (rows.length) {
+        const rawState = rows[0].state;
+        const parsedState = typeof rawState === "string" ? JSON.parse(rawState || "{}") : rawState;
+        applyState(parsedState || {});
+      } else {
+        if (fs.existsSync(DB_FILE)) {
+          try {
+            const raw = fs.readFileSync(DB_FILE, "utf8");
+            const parsed = JSON.parse(raw || "{}");
+            applyState(parsed);
+          } catch (err) {
+            console.error("Failed to import local database.json into Neon.", err.message);
+          }
+        }
+        const stateJson = JSON.stringify(getCurrentState());
+        await sql`
+          INSERT INTO app_state (id, state, updated_at)
+          VALUES (${ONLINE_STATE_ID}, ${stateJson}::jsonb, NOW())
+        `;
+      }
+
+      console.log("Using Netlify Neon online database.");
+      return;
+    } catch (err) {
+      console.error("Neon connection failed. Falling back to local database.json.", err.message);
+      sql = null;
+    }
+  }
+  if (NETLIFY_DATABASE_URL && !HAS_REAL_NEON_URL) {
+    console.log("NETLIFY_DATABASE_URL is not set to a real value. Using local database.json.");
+  }
+
+  if (!fs.existsSync(DB_FILE)) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(getCurrentState(), null, 2), "utf8");
+    return;
+  }
+
+  try {
+    const raw = fs.readFileSync(DB_FILE, "utf8");
+    const parsed = JSON.parse(raw || "{}");
+    applyState(parsed);
+  } catch (err) {
+    console.error("Failed to load database.json", err);
+  }
+}
+
+function saveDatabase() {
+  const data = getCurrentState();
+  if (sql) {
+    const stateJson = JSON.stringify(data);
+    sql`
+      INSERT INTO app_state (id, state, updated_at)
+      VALUES (${ONLINE_STATE_ID}, ${stateJson}::jsonb, NOW())
+      ON CONFLICT (id)
+      DO UPDATE SET state = EXCLUDED.state, updated_at = NOW()
+    `.catch(err => {
+      console.error("Failed to save to Neon:", err.message);
+    });
+    return;
+  }
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
+}
 
 async function sendOtpSms(phone, otp) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
@@ -66,6 +180,7 @@ app.post("/signup", (req, res) => {
     return res.status(409).json({ error: "Registration number already exists" });
   }
   users.set(username, { username, regNumber, phone, role, password, moduleTitle, moduleCode });
+  saveDatabase();
   res.json({ ok: true });
 });
 
@@ -126,6 +241,7 @@ app.post("/forgot-password/verify-otp-reset", (req, res) => {
   user.password = newPassword;
   users.set(username, user);
   passwordResetOtps.delete(username);
+  saveDatabase();
   res.json({ ok: true });
 });
 
@@ -155,6 +271,7 @@ app.put("/teacher/:username", (req, res) => {
   user.moduleTitle = moduleTitle;
   user.moduleCode = moduleCode;
   users.set(username, user);
+  saveDatabase();
   res.json({ ok: true });
 });
 
@@ -194,6 +311,7 @@ app.put("/users/:username", (req, res) => {
     user.moduleCode = "";
   }
   users.set(username, user);
+  saveDatabase();
   res.json({ ok: true });
 });
 
@@ -217,6 +335,7 @@ app.post("/marks", (req, res) => {
   }
   const mark = { id: nextMarkId++, studentUsername, course, score, maxScore, createdBy: createdBy || "" };
   marks.push(mark);
+  saveDatabase();
   res.json({ ok: true, mark });
 });
 
@@ -252,6 +371,7 @@ app.put("/marks/:id", (req, res) => {
     return res.status(403).json({ error: "Not allowed" });
   }
   marks[idx] = { id, studentUsername, course, score, maxScore, createdBy: marks[idx].createdBy || "" };
+  saveDatabase();
   res.json({ ok: true, mark: marks[idx] });
 });
 
@@ -272,6 +392,7 @@ app.delete("/marks/:id", (req, res) => {
     return res.status(403).json({ error: "Not allowed" });
   }
   const deleted = marks.splice(idx, 1)[0];
+  saveDatabase();
   res.json({ ok: true, mark: deleted });
 });
 
@@ -293,6 +414,7 @@ app.delete("/marks", (req, res) => {
     return res.status(403).json({ error: "Not allowed" });
   }
   const deleted = marks.splice(idx, 1)[0];
+  saveDatabase();
   res.json({ ok: true, mark: deleted });
 });
 
@@ -356,6 +478,7 @@ app.post("/marks/import", (req, res) => {
     imported += 1;
   });
 
+  saveDatabase();
   res.json({ ok: true, imported });
 });
 
@@ -438,6 +561,7 @@ app.post("/marks/import.xlsx", (req, res) => {
     marks.push(mark);
     imported += 1;
   });
+  saveDatabase();
   res.json({ ok: true, imported });
 });
 
@@ -451,6 +575,14 @@ app.get("/marks/:username", (req, res) => {
   res.json(result);
 });
 
-app.listen(PORT, () => {
-  console.log(`SmartAPP API listening on http://localhost:${PORT}`);
+async function startServer() {
+  await loadDatabase();
+  app.listen(PORT, () => {
+    console.log(`SmartAPP API listening on http://localhost:${PORT}`);
+  });
+}
+
+startServer().catch(err => {
+  console.error("Failed to start SmartAPP server:", err);
+  process.exit(1);
 });
